@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 15s   # How often to scrape targets (default is 1m)
+
+scrape_configs:
+  - job_name: 'node-app'   # Name of this job in Prometheus
+    scrape_interval: 5s    # Override scrape interval just for this job
+    static_configs:
+      - targets: ['localhost:5001']   # Replace 3000 with your app's PORT
+        labels:
+          service: nodejs-app
