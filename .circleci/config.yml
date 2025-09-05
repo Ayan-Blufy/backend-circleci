@@ -5,11 +5,9 @@ jobs:
     executor: node-executor
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run:
-                name: Install dependencies
-                command: npm install
+      - run:
+          name: Install dependencies
+          command: npm install
 
 executors:
   node-executor:
