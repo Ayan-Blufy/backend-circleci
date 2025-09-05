@@ -1,0 +1,23 @@
+version: 2.1
+
+jobs:
+  build:
+    executor: node-executor
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run:
+                name: Install dependencies
+                command: npm install
+
+executors:
+  node-executor:
+    docker:
+      - image: cimg/node:16.20.0
+    working_directory: ./house/node-backed
+
+workflows:
+  build:
+    jobs:
+      - build
