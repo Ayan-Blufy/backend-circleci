@@ -12,7 +12,7 @@ collectDefaultMetrics({register: client.register});
 const server = (app, port) => {
   return app.listen(port, () => {
     console.log('Express started');
-    console.log(`Listening on  port ${port}`);
+    console.log(`Listening  port ${port}`);
     console.log(`Health route GET http://127.0.0.1:${port}/api/health`);
   });
 };
