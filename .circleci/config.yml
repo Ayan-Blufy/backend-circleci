@@ -1,13 +1,24 @@
 version: 2.1
 
+parameters:
+  node-version:
+    type: string
+    default: "16.20.0"
+
+commands:
+  install-deps:
+    description: "Install npm dependencies"
+    steps:
+      - run:
+          name: Install dependencies
+          command: npm install
+
 jobs:
   build:
     executor: node-executor
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: npm install
+      - install-deps
 
 executors:
   node-executor:
