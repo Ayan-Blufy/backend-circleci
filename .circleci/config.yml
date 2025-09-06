@@ -26,8 +26,7 @@ jobs:
             - .
 
   test:
-    docker:
-      - image: cimg/node:<<parameters.node-version>>
+    executor: node-executor
     steps:
       - attach_workspace:
           at: .
