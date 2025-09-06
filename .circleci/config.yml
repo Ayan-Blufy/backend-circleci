@@ -18,6 +18,9 @@ commands:
       - run:
           name: Deploy to AWS
           command: |
+           mkdir -p ~/.ssh
+            touch ~/.ssh/config
+            echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >> ~/.ssh/config
             tar -cvzf 'node-backend.tar' *
             scp 'node-backend.tar' ubuntu@13.234.32.207:/home/ubuntu/
             echo "copied node-backend.tar"
