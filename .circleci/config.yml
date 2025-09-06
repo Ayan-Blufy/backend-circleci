@@ -9,12 +9,16 @@ commands:
           command: |
             npm install
 
+
   prod-aws-deploy:
     description: "Deploy to AWS in production mode"
     steps:
       - add_ssh_keys:
           fingerprints:
             - "SHA256:naifTaUg5oeXuKpfe56bKRaXinbZjlqMhqhyImnwWag"
+      - run:
+          name: Add server host key
+          command: ssh-keyscan -H 13.234.32.207 >> ~/.ssh/known_hosts
       - run:
           name: Deploy to AWS
           command: |
