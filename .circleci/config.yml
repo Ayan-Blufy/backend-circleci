@@ -31,7 +31,7 @@ jobs:
           at: .
       - run:
           name: Run tests
-          command: pwd
+          command: ls -la
 
 executors:
   node-executor:
