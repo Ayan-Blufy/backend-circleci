@@ -19,7 +19,7 @@ commands:
           name: Deploy to AWS
           command: |
             tar -cvzf 'node-backend.tar' *
-            scp -i fingerprints 'node-backend.tar' ubuntu@34.47.138.131:/home/ubuntu/
+            scp -i fingerprints 'node-backend.tar' ubuntu@13.234.32.207:/home/ubuntu/
             echo "copied node-backend.tar"
             ssh -i fingerprints node-backend 'mkdir -p data/services/node-backend && tar -xvzf node-backend.tar -C data/services/node-backend/ && rm node-backend.tar'
             echo "deployed to server"
