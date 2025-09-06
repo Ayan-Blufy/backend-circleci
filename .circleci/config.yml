@@ -16,9 +16,24 @@ commands:
 jobs:
   build:
     executor: node-executor
+    working_directory: ./house/node-backed
     steps:
       - checkout
       - install-deps
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  test:
+    docker:
+      - image: cimg/node:<<parameters.node-version>>
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run tests
+          command: pwd
 
 executors:
   node-executor:
@@ -30,3 +45,6 @@ workflows:
   build:
     jobs:
       - build
+      - test:
+          requires:
+            - build
