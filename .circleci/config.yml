@@ -16,7 +16,6 @@ commands:
 jobs:
   build:
     executor: node-executor
-    working_directory: ./house/node-backed
     steps:
       - checkout
       - install-deps
