@@ -9,31 +9,61 @@ commands:
           command: |
             npm install
 
+  prod-aws-deploy:
+    description: "Deploy to AWS in production mode"
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:naifTaUg5oeXuKpfe56bKRaXinbZjlqMhqhyImnwWag"
+      - run:
+          name: Deploy to AWS
+          command: |
+            tar -cvzf 'node-backend.tar' *
+            scp -i fingerprints 'node-backend.tar' ubuntu@34.47.138.131:/home/ubuntu/
+            echo "copied node-backend.tar"
+            ssh -i fingerprints node-backend 'mkdir -p data/services/node-backend && tar -xvzf node-backend.tar -C data/services/node-backend/ && rm node-backend.tar'
+            echo "deployed to server"
+            ssh -i fingerprints node-backend 'cd data/services/node-backend && pm2 start ./src/server.js'
 
+
+deploy-prod:
+  description: "Deploy the project"
+  executor: default
+  steps:
+    - attach_workspace:
+        at: ~/
+    -  prod-aws-deploy
 
 executors:
   node-executor:
     docker:
       - image: circleci/node:14
 
-
 jobs:
   install:
     executor: node-executor
     steps:
       - checkout
+      - restore_cache:
+          key: v1-node-modules-{{ checksum "package-lock.json" }}
       - install_dependencies
       - persist_to_workspace:
-          paths: 
+          paths:
             - project
           root: ~/
-      - run : 
-          name: Verify Installation
-          command: |
-            pwd
+      - save_cache:
+          key: v1-node-modules-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/project/node_modules
 
 workflows:
   version: 2
   install_and_test:
     jobs:
       - install
+      - deploy-prod:
+          requires:
+            - install
+          filters:
+            branches:
+              only: main
