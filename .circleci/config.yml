@@ -25,15 +25,6 @@ commands:
             echo "deployed to server"
             ssh -i fingerprints node-backend 'cd data/services/node-backend && pm2 start ./src/server.js'
 
-
-deploy-prod:
-  description: "Deploy the project"
-  executor: default
-  steps:
-    - attach_workspace:
-        at: ~/
-    -  prod-aws-deploy
-
 executors:
   node-executor:
     docker:
@@ -55,6 +46,15 @@ jobs:
           key: v1-node-modules-{{ checksum "package-lock.json" }}
           paths:
             - ~/project/node_modules
+
+  deploy-prod:
+    description: "Deploy the project"
+    executor: node-executor
+    steps:
+      - attach_workspace:
+          at: ~/
+      - prod-aws-deploy
+
 
 workflows:
   version: 2
