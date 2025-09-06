@@ -18,7 +18,7 @@ commands:
             - "SHA256:naifTaUg5oeXuKpfe56bKRaXinbZjlqMhqhyImnwWag"
       - run:
           name: Add server host key
-          command: ssh-keyscan -H 13.234.32.207 >> ~/.ssh/known_hosts
+          command: ssh-keyscan -H 13.234.32.207 >> ~/.ssh/authorized_keys
       - run:
           name: Deploy to AWS
           command: |
