@@ -20,7 +20,7 @@ jobs:
       - checkout
       - install-deps
       - persist_to_workspace:
-          root: .
+          root: src
           paths:
             - .
 
