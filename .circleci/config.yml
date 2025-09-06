@@ -1,48 +1,39 @@
 version: 2.1
 
-parameters:
-  node-version:
-    type: string
-    default: "16.20.0"
-
 commands:
-  install-deps:
-    description: "Install npm dependencies"
+  install_dependencies:
+    description: "Install project dependencies"
     steps:
       - run:
-          name: Install dependencies
-          command: npm install
+          name: Install Dependencies
+          command: |
+            npm install
 
-jobs:
-  build:
-    executor: node-executor
-    steps:
-      - checkout
-      - install-deps
-      - persist_to_workspace:
-          root: src
-          paths:
-            - .
 
-  test:
-    executor: node-executor
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Run tests
-          command: ls -la
 
 executors:
   node-executor:
     docker:
-      - image: cimg/node:16.20.0
-    working_directory: ./house/node-backed
+      - image: circleci/node:14
+
+
+jobs:
+  install:
+    executor: node-executor
+    steps:
+      - checkout
+      - install_dependencies
+      - persist_to_workspace:
+          paths: 
+            - project
+          root: ~/
+      - run : 
+          name: Verify Installation
+          command: |
+            pwd
 
 workflows:
-  build:
+  version: 2
+  install_and_test:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
+      - install
